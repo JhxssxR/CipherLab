@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CipherLab — Laboratory Documentation</title>
+<style>
+    @page { size: A4; margin: 18mm; }
+    * { box-sizing: border-box; }
+    body {
+        font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+        font-size: 11pt;
+        line-height: 1.55;
+        color: #1a1a1a;
+        max-width: 190mm;
+        margin: 0 auto;
+        padding: 24px;
+    }
+    h1 {
+        font-size: 19pt;
+        margin: 0 0 2px;
+        border-bottom: 3px solid #0d9488;
+        padding-bottom: 8px;
+    }
+    h2 { font-size: 13.5pt; margin: 22px 0 8px; color: #0f766e; }
+    h3 { font-size: 11.5pt; margin: 14px 0 6px; }
+    p { margin: 6px 0; }
+    ul, ol { margin: 6px 0; padding-left: 24px; }
+    li { margin: 3px 0; }
+    table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 10pt; }
+    th, td { border: 1px solid #999; padding: 5px 9px; text-align: left; vertical-align: top; }
+    th { background: #e0f2f1; }
+    code, pre {
+        font-family: Consolas, 'Courier New', monospace;
+        background: #f4f4f2;
+        border-radius: 4px;
+        font-size: 9.5pt;
+    }
+    code { padding: 1px 4px; }
+    pre {
+        padding: 10px 12px;
+        border: 1px solid #ccc;
+        overflow-x: auto;
+        line-height: 1.45;
+    }
+    .placeholder {
+        background: #fde047;
+        border-bottom: 1px dashed #a16207;
+        padding: 0 3px;
+        font-weight: 600;
+    }
+    .todo {
+        background: #fff7d6;
+        border: 2px dashed #ca8a04;
+        border-radius: 8px;
+        padding: 10px 14px;
+        margin-bottom: 18px;
+        font-size: 10pt;
+    }
+    .meta { color: #555; font-size: 10pt; margin: 2px 0 14px; }
+    .pass { color: #15803d; font-weight: 700; }
+    @media print { .todo { display: none; } .placeholder { background: transparent; border-bottom: none; } }
+</style>
+</head>
+<body>
+
+<div class="todo">
+    ✂ BEFORE PRINTING: replace every yellow highlight with your real details (names, contributions,
+    course/section, date). Yellow highlighting disappears automatically when printed, but the placeholder
+    text stays — so fill them in.
+</div>
+
+<h1>CipherLab — Build Your Own Cryptography Application</h1>
+<p class="meta">
+    Laboratory Activity: Cryptography — Information Assurance and Security 1<br>
+    <span class="placeholder">[Course / Section]</span> &nbsp;|&nbsp;
+    <span class="placeholder">[Instructor: Prof. Somerset Elcid R. Siang]</span> &nbsp;|&nbsp;
+    <span class="placeholder">[Date Submitted]</span>
+</p>
+
+<h2>1. Group Members and Individual Contributions</h2>
+<table>
+    <tr>
+        <th style="width:28%">Member</th>
+        <th>Contributions</th>
+    </tr>
+    <tr>
+        <td class="placeholder">[Member 1 Name]</td>
+        <td>Cipher engine implementation (<code>Cipher.php</code> — <code>encrypt()</code>, <code>decrypt()</code>,
+        <code>transform()</code>); keyword validation logic; running the automated test suite and recording results.</td>
+    </tr>
+    <tr>
+        <td class="placeholder">[Member 2 Name]</td>
+        <td>Application interface design (<code>index.php</code>); real-time client-side behavior
+        (<code>assets/cipher.js</code> — AJAX requests, copy-to-clipboard, live counters, empty-input error feedback).</td>
+    </tr>
+    <tr>
+        <td class="placeholder">[Member 3 Name]</td>
+        <td>Request handling and routing (<code>app.php</code> — form/AJAX dual architecture, JSON responses);
+        self-test page (<code>test.php</code>); application documentation and run instructions (<code>README.md</code>).</td>
+    </tr>
+</table>
+<p>All members participated in debugging, verifying the encrypt/decrypt round-trip results, and preparing this documentation.</p>
+
+<h2>2. Application Overview and Programming Language</h2>
+<p><strong>Name:</strong> CipherLab — Vigenère Cipher Workspace<br>
+<strong>Purpose:</strong> An interactive, educational web application that encrypts and decrypts text in real time
+using the classical Vigenère polyalphabetic substitution cipher.</p>
+<p><strong>Programming language and stack:</strong> PHP 8 (vanilla — no frameworks and no cryptographic packages)
+for the encryption engine, input validation, and server-side rendering; vanilla JavaScript (fetch API) for real-time
+updates without page reloads; HTML/CSS (Tailwind utility classes) for the interface.</p>
+<p><strong>Application components:</strong></p>
+<table>
+    <tr><th style="width:32%">File</th><th>Role</th></tr>
+    <tr><td><code>Cipher.php</code></td><td>Hand-written <code>encrypt()</code>, <code>decrypt()</code>, and shared
+    <code>transform()</code> functions</td></tr>
+    <tr><td><code>app.php</code></td><td>Input validation, action routing, form POST and AJAX/JSON handling</td></tr>
+    <tr><td><code>index.php</code></td><td>Workspace interface: message input, keyword field, Encrypt / Decrypt / Clear buttons, output panel</td></tr>
+    <tr><td><code>test.php</code></td><td>Automated self-test page covering all required test cases</td></tr>
+    <tr><td><code>assets/cipher.js</code></td><td>Client-side behavior: AJAX calls, live counters, clipboard, error display</td></tr>
+    <tr><td><code>README.md</code></td><td>Instructions for running the application (XAMPP or PHP built-in server)</td></tr>
+</table>
+
+<h2>3. Description of the Selected Encryption Method</h2>
+<p>CipherLab implements the <strong>Vigenère cipher</strong>, a classical polyalphabetic substitution cipher.
+Instead of shifting every letter by a fixed amount (as in the Caesar cipher), each letter of the keyword determines
+how many positions its message letter is shifted: A = 0, B = 1, C = 2, and so on up to Z = 25. The keyword repeats
+across the entire message, so a single keyword produces 26 different shift alphabets.</p>
+<p>Because every shift is undone by the exact opposite shift, the method is <strong>fully reversible</strong>:
+encrypting with a keyword, then decrypting the result with the same keyword, recovers the original message exactly.</p>
+
+<h2>4. Explanation of the Encryption Function</h2>
+<p>The engine lives in <code>Cipher.php</code>. Both actions share one transformation function,
+<code>transform()</code>, which is called with direction <code>+1</code> for encryption and <code>−1</code>
+for decryption.</p>
+
+<h3>Input</h3>
+<ul>
+    <li><code>$text</code> — the message to transform (any printable text).</li>
+    <li><code>$keyword</code> — the secret keyword (letters A–Z only, case-insensitive; automatically uppercased).</li>
+</ul>
+
+<h3>Key and settings</h3>
+<ul>
+    <li>The keyword must contain letters only; the input is rejected otherwise.</li>
+    <li>The keyword repeats endlessly (<code>$keyIndex % $keyLength</code>) for as long as there are letters to shift.</li>
+    <li>Only A–Z and a–z characters are encrypted; digits, spaces, and punctuation pass through unchanged.</li>
+    <li>Letter case is preserved (uppercase and lowercase are encoded with separate base values).</li>
+</ul>
+
+<h3>Transformation steps</h3>
+<p><code>encrypt(string $text, string $keyword): string</code> calls
+<code>transform($text, $keyword, 1)</code>, which:</p>
+<ol>
+    <li><strong>Validates</strong> the keyword (letters A–Z only — an empty or invalid keyword throws an exception).</li>
+    <li><strong>Reads the message letter by letter</strong> in a loop.</li>
+    <li><strong>Computes the shift</strong> from the current keyword letter: <code>ord('K') − ord('A') = 10</code>.</li>
+    <li><strong>Shifts the letter forward</strong> by that amount with wrap-around using modulo 26 arithmetic,
+    keeping its original case.</li>
+    <li><strong>Advances the key index</strong> only when a letter was shifted; non-letters skip this step.</li>
+</ol>
+
+<h3>Core code (actual implementation)</h3>
+<pre>$base    = $isUppercase ? 65 : 97;
+$shift   = ord($normalizedKey[$keyIndex % $keyLength]) - 65;
+$shifted = ($code - $base + ($direction * $shift) + 26) % 26;
+$result .= chr($base + $shifted);
+$keyIndex++;</pre>
+<p class="meta"><code>$direction</code> is +1 when encrypting and −1 when decrypting; the added <code>26</code>
+keeps the operand positive so a single formula serves both directions.</p>
+
+<h3>Output</h3>
+<p>The ciphertext string — same length as the input, with letters substituted and every other character preserved
+exactly as typed.</p>
+
+<h2>5. Explanation of the Decryption Function</h2>
+<p><code>decrypt(string $text, string $keyword): string</code> calls the same shared engine with direction
+<code>−1</code>, which subtracts each keyword letter's shift instead of adding it. Since every encryption shift is
+added modulo 26, subtracting the identical shift (with the same key-advance schedule) undoes it exactly.</p>
+<table>
+    <tr><th>Action</th><th>Direction</th><th>Formula</th><th>Effect</th></tr>
+    <tr><td>Encrypt</td><td>+1</td><td><code>(Letter − Base + Shift + 26) mod 26</code></td><td>Moves forward through the alphabet</td></tr>
+    <tr><td>Decrypt</td><td>−1</td><td><code>(Letter − Base − Shift + 26) mod 26</code></td><td>Moves backward through the alphabet</td></tr>
+</table>
+<p>The <code>+ 26</code> term prevents negative values when subtracting shifts that are larger than the letter's
+position (e.g. 9 − 24 = −15; −15 + 26 = 11 → <code>L</code>), so the formula never produces an invalid character.
+Non-letters are copied through untouched, and the keyword advances at the same positions as during encryption —
+an essential requirement, since a desynchronized key would corrupt the message.</p>
+
+<h2>6. Worked Example</h2>
+<p><strong>Original text:</strong> <code>HELLO</code> &nbsp;•&nbsp; <strong>Keyword:</strong> <code>KEY</code> (repeats as KEYKE)</p>
+<h3>Encryption (forward shift)</h3>
+<table>
+    <tr><th>Letter</th><th>Value (A=0)</th><th>Key letter</th><th>Shift</th><th>Calculation</th><th>Cipher letter</th></tr>
+    <tr><td>H</td><td>7</td><td>K</td><td>10</td><td>(7 + 10) mod 26 = 17</td><td>R</td></tr>
+    <tr><td>E</td><td>4</td><td>E</td><td>4</td><td>(4 + 4) mod 26 = 8</td><td>I</td></tr>
+    <tr><td>L</td><td>11</td><td>Y</td><td>24</td><td>(11 + 24) mod 26 = 35 mod 26 = 9</td><td>J</td></tr>
+    <tr><td>L</td><td>11</td><td>K</td><td>10</td><td>(11 + 10) mod 26 = 21</td><td>V</td></tr>
+    <tr><td>O</td><td>14</td><td>E</td><td>4</td><td>(14 + 4) mod 26 = 18</td><td>S</td></tr>
+</table>
+<h3>Decryption (backward shift, same keyword)</h3>
+<table>
+    <tr><th>Cipher letter</th><th>Value</th><th>Key letter</th><th>Shift</th><th>Calculation</th><th>Recovered letter</th></tr>
+    <tr><td>R</td><td>17</td><td>K</td><td>10</td><td>17 − 10 = 7</td><td>H</td></tr>
+    <tr><td>I</td><td>8</td><td>E</td><td>4</td><td>8 − 4 = 4</td><td>E</td></tr>
+    <tr><td>J</td><td>9</td><td>Y</td><td>24</td><td>9 − 24 = −15; −15 + 26 = 11</td><td>L</td></tr>
+    <tr><td>V</td><td>21</td><td>K</td><td>10</td><td>21 − 10 = 11</td><td>L</td></tr>
+    <tr><td>S</td><td>18</td><td>E</td><td>4</td><td>18 − 4 = 14</td><td>O</td></tr>
+</table>
+<p><strong>Result:</strong> Original <code>HELLO</code> → Encrypted <code>RIJVS</code> → Recovered <code>HELLO</code>
+— a 100% match, produced by the actual application code.</p>
+
+<h2>7. Test Results and Known Limitations</h2>
+<h3>Test results</h3>
+<p>The application ships with an automated self-test page (<code>test.php</code>) that runs the required test cases
+through the real cipher code and reports round-trip verification for each. All cases pass:</p>
+<table>
+    <tr><th style="width:38%">Test case</th><th>Sample</th><th style="width:14%">Result</th></tr>
+    <tr><td>A single word</td><td><code>Lantern</code> (key PIXIE)</td><td class="pass">PASS</td></tr>
+    <tr><td>A sentence with spaces</td><td><code>Agent Nova will rendezvous at Sector 7, not Sector 8.</code> (key MOONLIGHT)</td><td class="pass">PASS</td></tr>
+    <tr><td>Mixed uppercase and lowercase</td><td><code>MiXeD CaSe MANIFESTO</code> (key LUNA)</td><td class="pass">PASS</td></tr>
+    <tr><td>Numbers and special characters</td><td><code>The parcel #44 arrives Tuesday; bring exactly $25.</code> (key ORCHID)</td><td class="pass">PASS</td></tr>
+    <tr><td>Unsupported characters only</td><td><code>.?-!</code> and spaces (key KEY)</td><td class="pass">PASS</td></tr>
+    <tr><td>Empty input</td><td>Rejected with a clear error message before transformation</td><td class="pass">PASS</td></tr>
+    <tr><td>Invalid keyword (digits/symbols)</td><td>Rejected with a clear error message before transformation</td><td class="pass">PASS</td></tr>
+    <tr><td>A second sentence with spaces</td><td><code>Zara eats 3 apples daily! Run fast, hide deep.</code> (key VECTOR)</td><td class="pass">PASS</td></tr>
+</table>
+<p>For every valid input, encryption followed by decryption with the same keyword returned the original text with
+exact character-for-character fidelity, including letter case, spacing, digits, and punctuation.</p>
+
+<h3>Known limitations</h3>
+<ul>
+    <li><strong>Educational only:</strong> the Vigenère cipher is a historical method and offers no meaningful
+    security for modern sensitive data.</li>
+    <li><strong>Pattern leakage:</strong> a repeating keyword can be broken on longer texts through statistical
+    analysis (e.g. the Kasiski examination).</li>
+    <li><strong>Letters only:</strong> digits, spaces, and punctuation are left visible, revealing sentence
+    structure and word boundaries.</li>
+    <li><strong>Strict keyword rules:</strong> the keyword accepts English letters A–Z only, with no digits or symbols.</li>
+    <li><strong>Text-only:</strong> the tool processes plain text strings; binary files such as images or PDFs are not supported.</li>
+</ul>
+
+<h2>Source Acknowledgment</h2>
+<p>The Vigenère method description is adapted from the historical description of the cipher as documented in
+standard references on classical cryptography. The PHP implementation, interface, validation, and test suite in
+this repository were written entirely by the group; no built-in encryption/decryption functions, cryptographic
+libraries, or external services were used.</p>
+
+<h2>How to Run</h2>
+<p>Place the <code>CipherLab</code> folder inside the XAMPP <code>htdocs</code> directory, start Apache, and open
+<code>http://localhost/CipherLab/index.php</code> (self-test:
+<code>http://localhost/CipherLab/test.php</code>). Alternatively, run <code>php -S localhost:8000</code> from the
+project folder. No PHP extensions are required. Full details are in <code>README.md</code>.</p>
+
+</body>
+</html>

@@ -17,40 +17,12 @@ require_once __DIR__ . '/app.php';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        /* Smooth custom scrollbars */
-        ::-webkit-scrollbar {
-            width: 7px;
-            height: 7px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #10161c;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #2a3d4a;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #3d5869;
-        }
-    </style>
+    <script src="assets/tailwind-config.js"></script>
+    <link rel="stylesheet" href="assets/cipher.css">
 </head>
 <body class="h-screen max-h-screen overflow-hidden bg-[#0c1014] text-slate-100 font-sans antialiased selection:bg-teal-500/30 selection:text-teal-200">
     <div class="relative flex h-full flex-col justify-between px-3 sm:px-6 lg:px-10 py-3 lg:py-4 max-w-[1520px] mx-auto">
-        <!-- Soft ambient decorative blur (gentle on eyes) -->
+
         <div
             class="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-teal-500/[0.07] blur-[100px]"
             aria-hidden="true"
@@ -60,7 +32,7 @@ require_once __DIR__ . '/app.php';
             aria-hidden="true"
         ></div>
 
-        <!-- 1. Header (Clean & balanced) -->
+
         <header class="relative z-10 flex shrink-0 items-center justify-between pb-2.5 border-b border-slate-800">
             <a href="index.php" class="flex items-center gap-2.5 text-base font-extrabold tracking-wide text-white group">
                 <span class="grid h-8 w-8 place-items-center rounded-lg border border-teal-500/40 bg-teal-500/10 text-teal-300 transition group-hover:scale-105 group-hover:shadow-[0_0_12px_rgba(45,212,191,0.35)]">
@@ -82,7 +54,7 @@ require_once __DIR__ . '/app.php';
             </div>
         </header>
 
-        <!-- 2. Subheader Banner -->
+
         <div class="relative z-10 flex shrink-0 items-center justify-between py-2 sm:py-2.5">
             <div>
                 <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white flex items-center gap-2">
@@ -93,14 +65,14 @@ require_once __DIR__ . '/app.php';
                 </p>
             </div>
 
-            <!-- Copy Toast Notification -->
+
             <div id="copyToast" class="transition-all duration-300 opacity-0 pointer-events-none flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-teal-500/40 bg-teal-950/80 text-xs font-mono font-medium text-teal-200 shadow-lg">
                 <svg class="h-3.5 w-3.5 fill-none stroke-current stroke-2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 <span>Result copied!</span>
             </div>
         </div>
 
-        <!-- 3. Error Alert Container -->
+
         <div
             id="errorAlert"
             class="<?= $error !== '' ? 'flex' : 'hidden' ?> relative z-10 mb-2 shrink-0 items-center gap-2.5 rounded-lg border border-red-500/30 bg-red-950/50 px-3.5 py-2 text-xs sm:text-sm text-red-200"
@@ -113,14 +85,13 @@ require_once __DIR__ . '/app.php';
             <span id="errorMessage" class="font-medium"><?= escape($error) ?></span>
         </div>
 
-        <!-- 4. Main Interactive Workspace (Split Panel: Eye-Friendly Slate-Teal with High Legibility) -->
+
         <form
             id="cipherForm"
             method="post"
             action="index.php"
             class="relative z-10 flex-1 min-h-0 grid w-full overflow-hidden rounded-2xl border border-slate-700/70 bg-[#12181f] shadow-2xl lg:grid-cols-[1.12fr_0.88fr]"
         >
-            <!-- Left Pane: Input Controls -->
             <section class="flex flex-col h-full min-h-0 p-4 sm:p-6 bg-[#162029] border-b border-slate-700/60 lg:border-b-0 lg:border-r lg:border-slate-700/60 justify-between gap-3 sm:gap-4 overflow-hidden">
                 <div class="flex items-center justify-between shrink-0">
                     <div class="flex items-center gap-2.5">
@@ -132,7 +103,6 @@ require_once __DIR__ . '/app.php';
                     </span>
                 </div>
 
-                <!-- Textarea: Clear readable typography -->
                 <div class="relative flex-1 min-h-[120px] flex flex-col">
                     <textarea
                         id="message"
@@ -143,7 +113,6 @@ require_once __DIR__ . '/app.php';
                     ><?= escape($message) ?></textarea>
                 </div>
 
-                <!-- Keyword Control Row -->
                 <div class="shrink-0 flex items-center justify-between gap-4 rounded-xl border border-slate-700/70 bg-[#10171e] p-3">
                     <div class="flex flex-col">
                         <label for="keyword" class="text-xs sm:text-sm font-semibold text-slate-200">Encryption Keyword</label>
@@ -167,7 +136,6 @@ require_once __DIR__ . '/app.php';
                     </div>
                 </div>
 
-                <!-- Action Buttons Row -->
                 <div class="shrink-0 grid grid-cols-3 gap-2.5 pt-0.5">
                     <button
                         type="submit"
@@ -210,7 +178,7 @@ require_once __DIR__ . '/app.php';
                 </div>
             </section>
 
-            <!-- Right Pane: Result Inspector -->
+
             <section class="flex flex-col h-full min-h-0 p-4 sm:p-6 bg-[#141d25] justify-between gap-3 sm:gap-4 overflow-hidden">
                 <div class="flex items-center justify-between shrink-0">
                     <div class="flex items-center gap-2.5">
@@ -239,7 +207,6 @@ require_once __DIR__ . '/app.php';
                     </div>
                 </div>
 
-                <!-- Result Box: High legibility & comfortable contrast -->
                 <div id="resultCard" class="relative flex-1 min-h-[120px] flex flex-col justify-between rounded-xl border <?= $isReady ? 'border-solid border-teal-500/40 bg-[#0e171e]' : 'border-dashed border-slate-700/80 bg-[#0e151b]' ?> p-4 sm:p-5 overflow-hidden shadow-inner">
                     <div id="resultContent" class="<?= $isReady ? 'flex' : 'hidden' ?> flex-col justify-between h-full w-full overflow-hidden">
                         <div class="flex-1 overflow-y-auto pr-1">
@@ -264,7 +231,6 @@ require_once __DIR__ . '/app.php';
                     </div>
                 </div>
 
-                <!-- Stats Bar: Clear and readable numbers -->
                 <div class="shrink-0 grid grid-cols-3 border-t border-slate-800 pt-3 text-center sm:text-left">
                     <div class="flex flex-col">
                         <span class="font-mono text-xs font-semibold uppercase tracking-wider text-slate-400">Characters</span>
@@ -282,222 +248,21 @@ require_once __DIR__ . '/app.php';
             </section>
         </form>
 
-        <!-- 5. Footer (Compact) -->
         <footer class="relative z-10 flex shrink-0 items-center justify-between pt-2 border-t border-slate-800 font-mono text-xs text-slate-500">
-           
+            <p class="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                <span class="text-teal-400/90 font-semibold">Supported characters:</span>
+                <span>A–Z and a–z (encrypted)</span>
+                <span class="text-slate-600">•</span>
+                <span>digits, spaces &amp; punctuation pass through unchanged</span>
+            </p>
+
+            <a
+                href="test.php"
+                class="shrink-0 font-semibold transition hover:text-teal-300"
+            >Self-test with fictional samples →</a>
         </footer>
     </div>
 
-    <!-- Client-side Interactive Script -->
-    <script>
-        (function() {
-            // Prevent browser scroll jumps
-            if ('scrollRestoration' in history) {
-                history.scrollRestoration = 'manual';
-            }
-
-            const form = document.getElementById('cipherForm');
-            const messageEl = document.getElementById('message');
-            const keywordEl = document.getElementById('keyword');
-            const liveCharCount = document.getElementById('liveCharCount');
-            const statChars = document.getElementById('statChars');
-            const statWords = document.getElementById('statWords');
-            const statKeyLen = document.getElementById('statKeyLen');
-            const errorAlert = document.getElementById('errorAlert');
-            const errorMessage = document.getElementById('errorMessage');
-            const btnClear = document.getElementById('btnClear');
-            const btnCopy = document.getElementById('btnCopy');
-            const copyToast = document.getElementById('copyToast');
-
-            const resultCard = document.getElementById('resultCard');
-            const resultContent = document.getElementById('resultContent');
-            const placeholderContent = document.getElementById('placeholderContent');
-            const outputText = document.getElementById('outputText');
-            const actionMeta = document.getElementById('actionMeta');
-            const statusBadge = document.getElementById('statusBadge');
-            const statusDot = document.getElementById('statusDot');
-            const statusText = document.getElementById('statusText');
-
-            // Live updates while typing in the textarea
-            function updateLiveCounts() {
-                const text = messageEl.value;
-                const chars = text.length;
-                const trimmed = text.trim();
-                const words = trimmed === '' ? 0 : trimmed.split(/\s+/).length;
-
-                liveCharCount.textContent = chars;
-                statChars.textContent = String(chars).padStart(2, '0');
-                statWords.textContent = String(words).padStart(2, '0');
-            }
-
-            function updateKeyLen() {
-                const key = keywordEl.value.trim() || 'CIPHER';
-                statKeyLen.textContent = String(key.length).padStart(2, '0');
-            }
-
-            messageEl.addEventListener('input', updateLiveCounts);
-            keywordEl.addEventListener('input', updateKeyLen);
-
-            // Handle seamless form actions without page reload or scrolling
-            async function performCipherAction(action) {
-                const message = messageEl.value;
-                const keywordInput = keywordEl.value.trim();
-                const keyword = keywordInput !== '' ? keywordInput : 'CIPHER';
-
-                // Client-side quick validation
-                if (message === '') {
-                    showError('Enter a message before encrypting or decrypting.');
-                    return;
-                }
-                if (!/^[A-Za-z]+$/.test(keyword)) {
-                    showError('The keyword can only contain letters from A to Z.');
-                    return;
-                }
-
-                hideError();
-
-                const formData = new FormData();
-                formData.append('message', message);
-                formData.append('keyword', keywordInput);
-                formData.append('action', action);
-                formData.append('ajax', '1');
-
-                try {
-                    const response = await fetch('index.php', {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'Accept': 'application/json'
-                        }
-                    });
-
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-
-                    const data = await response.json();
-
-                    if (!data.success && data.error) {
-                        showError(data.error);
-                        return;
-                    }
-
-                    // Render result
-                    outputText.textContent = data.output;
-                    actionMeta.textContent = (data.action === 'encrypt' ? 'Encrypted' : 'Decrypted') + ' with key ' + data.keyword;
-                    
-                    statChars.textContent = String(data.characterCount).padStart(2, '0');
-                    statWords.textContent = String(data.wordCount).padStart(2, '0');
-                    statKeyLen.textContent = String(data.keyLength).padStart(2, '0');
-
-                    // Switch states
-                    placeholderContent.classList.add('hidden');
-                    placeholderContent.classList.remove('flex');
-
-                    resultContent.classList.remove('hidden');
-                    resultContent.classList.add('flex');
-
-                    resultCard.classList.remove('border-dashed', 'bg-[#0e151b]', 'border-slate-700/80');
-                    resultCard.classList.add('border-solid', 'border-teal-500/40', 'bg-[#0e171e]');
-
-                    btnCopy.classList.remove('hidden');
-                    btnCopy.classList.add('flex');
-
-                    statusBadge.classList.remove('text-slate-400');
-                    statusBadge.classList.add('text-teal-300');
-
-                    statusDot.classList.remove('bg-slate-500');
-                    statusDot.classList.add('bg-teal-400', 'shadow-[0_0_8px_rgba(45,212,191,0.9)]');
-
-                    statusText.textContent = 'Ready';
-                } catch (err) {
-                    console.error('Cipher request failed:', err);
-                    // Native fallback if fetch fails
-                    form.submit();
-                }
-            }
-
-            // Bind buttons
-            document.getElementById('btnEncrypt').addEventListener('click', function(e) {
-                e.preventDefault();
-                performCipherAction('encrypt');
-            });
-
-            document.getElementById('btnDecrypt').addEventListener('click', function(e) {
-                e.preventDefault();
-                performCipherAction('decrypt');
-            });
-
-            // Clear button
-            btnClear.addEventListener('click', function() {
-                messageEl.value = '';
-                keywordEl.value = '';
-                updateLiveCounts();
-                updateKeyLen();
-                hideError();
-
-                // Reset result box
-                outputText.textContent = '';
-                resultContent.classList.add('hidden');
-                resultContent.classList.remove('flex');
-
-                placeholderContent.classList.remove('hidden');
-                placeholderContent.classList.add('flex');
-
-                resultCard.classList.add('border-dashed', 'bg-[#0e151b]', 'border-slate-700/80');
-                resultCard.classList.remove('border-solid', 'border-teal-500/40', 'bg-[#0e171e]');
-
-                btnCopy.classList.add('hidden');
-                btnCopy.classList.remove('flex');
-
-                statusBadge.classList.add('text-slate-400');
-                statusBadge.classList.remove('text-teal-300');
-
-                statusDot.classList.add('bg-slate-500');
-                statusDot.classList.remove('bg-teal-400', 'shadow-[0_0_8px_rgba(45,212,191,0.9)]');
-
-                statusText.textContent = 'Waiting';
-            });
-
-            // Copy button
-            btnCopy.addEventListener('click', async function() {
-                const text = outputText.textContent;
-                if (!text) return;
-                try {
-                    await navigator.clipboard.writeText(text);
-                    showToast();
-                } catch (err) {
-                    // Fallback
-                    const textarea = document.createElement('textarea');
-                    textarea.value = text;
-                    document.body.appendChild(textarea);
-                    textarea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textarea);
-                    showToast();
-                }
-            });
-
-            function showToast() {
-                copyToast.classList.remove('opacity-0', 'pointer-events-none');
-                copyToast.classList.add('opacity-100');
-                setTimeout(() => {
-                    copyToast.classList.remove('opacity-100');
-                    copyToast.classList.add('opacity-0', 'pointer-events-none');
-                }, 2000);
-            }
-
-            function showError(msg) {
-                errorMessage.textContent = msg;
-                errorAlert.classList.remove('hidden');
-                errorAlert.classList.add('flex');
-            }
-
-            function hideError() {
-                errorAlert.classList.add('hidden');
-                errorAlert.classList.remove('flex');
-            }
-        })();
-    </script>
+    <script src="assets/cipher.js"></script>
 </body>
 </html>

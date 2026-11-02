@@ -42,7 +42,6 @@ final class Cipher
             $isUppercase = $code >= 65 && $code <= 90;
             $isLowercase = $code >= 97 && $code <= 122;
 
-            // Preserve spaces, numbers, punctuation, and unsupported characters.
             if (!$isUppercase && !$isLowercase) {
                 $result .= $character;
                 continue;
